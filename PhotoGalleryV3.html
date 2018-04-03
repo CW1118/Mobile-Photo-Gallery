@@ -18,25 +18,13 @@
 
 9. Create a python script that downloads all images in a resource export with the keyword "gallery".
 
-X10. Use "Speedlane Lifeline Swing Photos (Slideshow)"
-
-X11. Start gallery zoomed in
-
 12. Change view in resource viewer to view resource page button.
-
-X13. Create Boon Edam's resource pages in the design testing catalog.
-
-X14. Create an Add All to Stack button that concatenates all product ids into one jumplink and clicks it
 
 15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
 
 16. Add the ability to hide the image name on the viewer mode.
 - either iterate through every title element and hide
 - or figure out how to dynamically change the innerhtml of a single title span
-
-X17. Add a white transparent circle around the bottom left arrow to expand action bar
-
-X18. Reload entire gallery on screen rotation
 
 -->
 
@@ -259,6 +247,11 @@ X18. Reload entire gallery on screen rotation
             bottom: -25% !important;
             transition: bottom 2s;
         }
+        
+        .slideUp {
+            top: -25% !important;
+            transition: top 2s;
+        }
 
         @keyframes zoomOut {
             0% {
@@ -462,7 +455,7 @@ X18. Reload entire gallery on screen rotation
             swiperImages.appendChild(newDiv);
             
             titleDiv = document.createElement("div");
-            titleDiv.classList.add("title");
+            titleDiv.classList.add("title", "slideUp");
             newDiv.appendChild(titleDiv);
             titleSpan = document.createElement("span");
             titleSpan.innerHTML = imageData[i]["Name"];

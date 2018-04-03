@@ -22,15 +22,24 @@
                 //animate the controls sliding out
             document.getElementById("viewerOptions").classList.remove("slideRight");
             document.getElementsByClassName("swiper-pagination")[0].classList.remove("slideDown");
+            var imageTitles = document.getElementsByClassName("title");
+            for (var i=0; i<imageTitles.length; i++) {
+                imageTitles[i].classList.remove('slideUp');
+            }
             }, 500)
         }
         function viewerUIToggle() {
             console.log("viewerUIToggle()");
             var viewerOptions = document.getElementById("viewerOptions");
             var paginationUI = document.getElementsByClassName("swiper-pagination")[0];
+            var imageTitles = document.getElementsByClassName("title");
             
             viewerOptions.classList.toggle('slideRight');
             paginationUI.classList.toggle('slideDown');
+            
+            for (var i=0; i<imageTitles.length; i++) {
+                imageTitles[i].classList.toggle('slideUp');
+            }
         }
         function touchStop() {
                 event.preventDefault();
