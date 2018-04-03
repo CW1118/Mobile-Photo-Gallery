@@ -26,6 +26,10 @@
 - either iterate through every title element and hide
 - or figure out how to dynamically change the innerhtml of a single title span
 
+17. Make the swiper viewer fade out like it fades in.
+- separate out the overlay from teh swiper images to instantly hide the image, but fade out the overlay
+- OR fade it all out at the same time
+
 -->
 
 <!DOCTYPE html>
@@ -158,6 +162,8 @@
             left: 0px;
             height: 100%;
             text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s;
         }
         
         .title {
@@ -223,15 +229,14 @@
         }
 
         .hide {
-            z-index: -1;
             background-color: rgba(0, 0, 0, 0);
-            opacity: 0;
             color: rgba(0, 0, 0, 0);
+            z-index: -1;
         }
-
+        
         .show {
             background-color: rgba(0, 0, 0, 0.9);
-            opacity: 2;
+            opacity: 1 !important;
             z-index: 0;
             color: #fff;
             transition: background-color 0.7s, color 0.7s;

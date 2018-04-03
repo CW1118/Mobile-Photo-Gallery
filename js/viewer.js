@@ -11,6 +11,7 @@
             });
             // Show Viewer
             overlay.classList.add("show");
+            overlay.classList.remove("hide");
             // Prevent Body Scrolling
             document.body.setAttribute("style", "overflow:hidden");
             document.body.addEventListener("touchmove", touchStop, false);
@@ -50,6 +51,12 @@
                 //swiperImages.removeChild(swiperImages.firstChild);
             //}
             overlay.classList.remove("show");
+            swiperImages.classList.add("hide");
+            setTimeout(function() {
+                //allow time for the overlay fade out to be seen
+                overlay.classList.add("hide");
+                swiperImages.classList.remove("hide");
+            }, 500)
             overlay.removeAttribute("style");
             document.body.removeAttribute("style");
             document.body.removeEventListener("touchmove", touchStop);
