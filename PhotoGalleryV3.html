@@ -12,15 +12,17 @@
 4. Show image display name above the image while in viewer mode.
 - either dynamically show the current image name or have an info button to show it
 
-5. Allow pinch zooming while in viewer mode.
+5. Add a button to view the image in the default image viewer.
 
 8. Make a pure css page loader
-
-9. Create a python script that downloads all images in a resource export with the keyword "gallery".
 
 12. Change view in resource viewer to view resource page button.
 
 15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
+
+16. If the viewer is open when the screen is rotated, reload the same slide once reloaded.
+
+17. Add support for videos.
 
 -->
 
@@ -338,8 +340,15 @@
     
 <script>
     
-    // reloads the page on screen rotate to prevent any issues
-    window.onorientationchange = function() { window.location.reload(); };
+    window.onload = (function() {
+       if (sessionStorage.getItem("lastImageNum") != null) {
+           var lastImageNum = sessionStorage.getItem("lastImageNum") - 1;
+           var lastImage = document.getElementsByClassName("swiper-slide")[lastImageNum].getElementsByTagName("img")[0];
+           setTimeout(function() {
+               view(lastImage);
+           }, 1000);
+    }
+    });
     
     function openPage() {
         var currentImage = document.getElementsByClassName("swiper-pagination-current")[0].innerHTML;
