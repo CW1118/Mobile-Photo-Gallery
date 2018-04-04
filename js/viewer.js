@@ -61,7 +61,7 @@ function closeViewer() {
     document.body.removeAttribute("style");
     document.body.removeEventListener("touchmove", touchStop);
     document.getElementById("showFooterIcon").classList.remove("slideRight");
-    sessionStorage.setItem("lastImageNum", null);
+    sessionStorage.setItem("lastImageNum", "null");
 }
 
 // reloads the page on screen rotate to prevent any issues
