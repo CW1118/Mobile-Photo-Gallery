@@ -22,14 +22,6 @@
 
 15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
 
-16. Add the ability to hide the image name on the viewer mode.
-- either iterate through every title element and hide
-- or figure out how to dynamically change the innerhtml of a single title span
-
-17. Make the swiper viewer fade out like it fades in.
-- separate out the overlay from teh swiper images to instantly hide the image, but fade out the overlay
-- OR fade it all out at the same time
-
 -->
 
 <!DOCTYPE html>
@@ -60,8 +52,7 @@
         }
 
         .header h1 {
-            margin-top: 0px;
-            margin-bottom: 5px;
+            margin: 0px;
             text-align: center;
             background-color: #B8192A;
             padding: 10px;
@@ -107,14 +98,14 @@
             width: 50px;
             text-align: center;
         }
-        .footerText {
+        #footerText {
             display: flex;
             justify-content: space-around;
             align-items: center;
             height: 15px;
             font-size: 11px;
         }
-        .footerText span {
+        #footerText span {
             display: inline-block;
             width: 50px;
             text-align: center;
@@ -145,6 +136,7 @@
             object-fit: cover;
             object-position: center;
             margin-bottom: .5em;
+            border-radius: 3px;
         }
 
         .image img {
@@ -242,6 +234,10 @@
             transition: background-color 0.7s, color 0.7s;
             -webkit-transition: background-color 0.7s, color 0.7s;
         }
+        
+        .disabled {
+            color: #ccc !important;
+        }
 
         .slideRight {
             right: -25% !important;
@@ -292,14 +288,14 @@
         <div class="footerIcons">
             <div><a href="/stacks_open"><img height="30px" src="images/Chevrons.png"></a></div>
             <div><img height="30px" src="images/AddToStack.png" onclick="addAll()"></div>
-            <div><i id="zoomIn" class="fa fa-search-plus" aria-hidden="true" onclick="zoom('in')"></i></div>
+            <div><i id="zoomIn" class="fa fa-search-plus disabled" aria-hidden="true" onclick="zoom('in')"></i></div>
             <div><i id="zoomOut" class="fa fa-search-minus" aria-hidden="true" onclick="zoom('out')"></i></div>
             <div><i class="fa fa-chevron-down" aria-hidden="true" onclick="toggleFooter('hide')"></i></div>
         </div>
-        <div class="footerText">
+        <div id="footerText">
             <span>Stacks</span>
             <span>Add All</span>
-            <span>Zoom In</span>
+            <span class="disabled">Zoom In</span>
             <span>Zoom Out</span>
             <span>Hide</span>
         </div>

@@ -3,16 +3,24 @@
             // get current column-count
             var currentZoom = window.getComputedStyle(gallery).getPropertyValue("column-count");
             var zoomNumber = Number(currentZoom.substr(currentZoom.length - 1));
+            var zoomOutButton = document.getElementById("zoomOut");
+            var zoomOutText = document.getElementById("footerText").children[3];
+            var zoomInButton = document.getElementById("zoomIn");
+            var zoomInText = document.getElementById("footerText").children[2];
             
             // zoom out
             if (action == "out") {
                 console.log("zoom out");
                 if (zoomNumber == 4) {
                     zoomNumber = 6;
+                    zoomOutButton.classList.add("disabled");
+                    zoomOutText.classList.add("disabled");
                     zoomAnimation(zoomNumber);
                 }
                 else if (zoomNumber == 2) {
                     zoomNumber = 4;
+                    zoomInButton.classList.remove("disabled");
+                    zoomInText.classList.remove("disabled");
                     zoomAnimation(zoomNumber);
                 }
             }
@@ -21,10 +29,14 @@
                 console.log("zoom in");
                 if (zoomNumber == 4) {
                     zoomNumber = 2;
+                    zoomInButton.classList.add("disabled");
+                    zoomInText.classList.add("disabled");
                     zoomAnimation(zoomNumber);
                 }
                 else if (zoomNumber == 6) {
                     zoomNumber = 4;
+                    zoomOutButton.classList.remove("disabled");
+                    zoomOutText.classList.remove("disabled");
                     zoomAnimation(zoomNumber);
                 }
             }
