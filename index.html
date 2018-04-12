@@ -1,0 +1,494 @@
+<!-- FUTURE FEATURES
+
+1. A separate admin html page that allows admins to add/update/remove images w/ input fields for image url, display name, and product jump link.
+- a button for this page will appear when the gallery is viewed on desktop using a media query
+
+2. Sections will be broken up using the category breadcrumb and headers will placed above each section.
+
+3. Custom galleries for presentations.
+- the user will able to select multiple images and add them to a custom gallery for later viewing
+- these images will possibly be added into a new folder
+
+4. Show image display name above the image while in viewer mode.
+- either dynamically show the current image name or have an info button to show it
+
+5. Add a button to view the image in the default image viewer.
+
+8. Make a pure css page loader
+
+12. Change view in resource viewer to view resource page button.
+
+15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
+
+17. Add support for videos.
+
+18. Disable tap and hold to save/copy on ios because it crashes the app.
+
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Photo Gallery</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <style>
+        body {
+            position: relative;
+            margin: 0px;
+            padding: 0px;
+            font-family: sans-serif;
+            background-color: #ededed;
+        }
+        a {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        .header {
+            color: #fff;
+            padding: 10px;
+        }
+
+        .header h1 {
+            margin: 0px;
+            text-align: center;
+            background-color: #B8192A;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        
+        #showFooterIcon {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            font-size: 30px;
+            color: #333333;
+            transition: right 1s;
+            z-index: 2;
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            padding: 10px;
+            width: 25px;
+            height: 25px;
+            box-shadow: 1px 1px 4px #333;
+        }
+        
+        .fa-chevron-up:before {
+            position: absolute;
+            top: 4px;
+            left: 7.5px;
+        }
+        
+        #footer {
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            background-color: rgba(255,255,255,0.8);
+            z-index: 2;
+            transition: bottom .8s;
+        }
+        .footerIcons {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 44px;
+        }
+        .footerIcons div {
+            width: 50px;
+            text-align: center;
+            padding-bottom: 30px;     
+            margin-bottom: -30px;
+            position: relative;
+            z-index: 1;
+        }
+        .footerIcons div a {
+            width: 50px;
+            padding-bottom: 30px;     
+            margin-bottom: -30px; 
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+        #footerText {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 15px;
+            font-size: 11px;
+        }
+        #footerText span {
+            display: inline-block;
+            width: 50px;
+            text-align: center;
+        }
+        .footerIcons i {
+            font-size: 30px;
+            color: #333333;
+        }
+
+        .tileView {
+            column-count: 2;
+            column-gap: 1em;
+            padding: 10px;
+        }
+
+        .tile {
+            transition: transform .2s;
+        }
+
+        /* add a media query for this to be removed from mobile
+        .tile:hover {
+            transform: scale(0.95);
+        }*/
+
+        .tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            margin-bottom: .5em;
+            border-radius: 2px;
+        }
+
+        .image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            left: 0px;
+            height: 100%;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .title {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            transition: top 0.4s;
+            text-align: center;
+            padding: 10px 0px;
+        }
+        
+        .title span {
+            background-color: rgba(0,0,0,0.7);
+            border-radius: 0px 0px 10px 10px;
+            padding: 10px 20px;
+            margin: 0 auto;
+            max-width: calc(100% - 60px);
+        }
+        
+        #viewerOptions {
+            position: absolute;
+            z-index: 2;
+            top: 0px;
+            right: 0px;
+            height: 185px;
+            width: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            transition: right 0.4s;
+            background-color: rgba(0,0,0,0.7);
+            border-radius: 0 0 0 10px;
+        }
+        
+        #viewerOptions div {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #viewerOptions i {
+            color: #fff;
+        }
+        
+        #closeButton  {
+            font-size: 50px;
+        }
+        
+        #stackButton img {
+            width: 40px;
+        }
+        
+        #viewButton i {
+            font-size: 35px;
+        }
+
+        .swiper-pagination {
+            bottom: 0px;
+            transition: bottom 0.4s;
+            width: auto;
+            display: inline-block;
+            background-color: rgba(0,0,0,0.7);
+            border-radius: 10px 10px 0 0;
+            padding: 10px 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hide {
+            background-color: rgba(0, 0, 0, 0);
+            color: rgba(0, 0, 0, 0);
+            z-index: -1;
+        }
+        
+        .show {
+            background-color: rgba(0, 0, 0, 0.9);
+            opacity: 1 !important;
+            z-index: 0;
+            color: #fff;
+            transition: background-color 0.7s, color 0.7s;
+            -webkit-transition: background-color 0.7s, color 0.7s;
+        }
+        
+        .disabled {
+            color: #ccc !important;
+        }
+
+        .slideRight {
+            right: -25% !important;
+            transition: right 2s !important;
+        }
+
+        .slideDown {
+            bottom: -25% !important;
+            transition: bottom 2s;
+        }
+        
+        .slideUp {
+            top: -25% !important;
+            transition: top 2s;
+        }
+
+        @keyframes zoomOut {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1 id="galleryName"></h1>
+    </div>
+    <i id="showFooterIcon" class="fa fa-chevron-up" aria-hidden="true" onclick="toggleFooter('show')"></i>
+    <div id="footer" class="slideDown">
+        <div class="footerIcons">
+            <div><a href="/stacks_open"><img height="30px" src="images/Chevrons.png"></a></div>
+            <div onclick="addAll()"><img height="30px" src="images/AddToStack.png"></div>
+            <div onclick="zoom('in')"><i id="zoomIn" class="fa fa-search-plus disabled" aria-hidden="true"></i></div>
+            <div onclick="zoom('out')"><i id="zoomOut" class="fa fa-search-minus" aria-hidden="true"></i></div>
+            <div onclick="toggleFooter('hide')"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+        </div>
+        <div id="footerText">
+            <span>Stacks</span>
+            <span>Add All</span>
+            <span class="disabled">Zoom In</span>
+            <span>Zoom Out</span>
+            <span>Hide</span>
+        </div>
+    </div>
+    <div id="gallery" class="tileView">
+    </div>
+
+    <div id="overlay" class="swiper-container hide" onclick="viewerUIToggle()">
+        <div id="viewerOptions" class="slideRight">
+            <div id="closeButton" onclick="closeViewer()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div id="stackButton" onclick="stackAdd()">
+                <img src="images/AddToStack.png">
+            </div>
+            <div id="viewButton" onclick="openPage()">
+                <i class="fa fa-share" aria-hidden="true"></i>
+            </div>
+            <a id="ghostAnchor"></a>
+        </div>
+        <div id="swiperImages" class="swiper-wrapper">
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination slideDown"></div>
+    </div>
+    <!--<div id="testContainer" class="tileView">start test container</div>-->
+</body>
+
+<!-- Load Images from JSON using imageData variable-->
+<script src="js/ImageData.json"></script>
+    
+<!-- Swiper JS -->
+<script src="js/swiper.min.js" async></script>
+
+<!--Custom Viewer-->
+<script src="js/viewer.js" async></script>
+
+<!--Zoom Feature-->
+<script src="js/actions.js" async></script>
+    
+<script>
+    
+    window.onload = (function() {
+       if (sessionStorage.getItem("lastImageNum") !== null &&
+          sessionStorage.getItem("lastImageNum") !== "null") {
+           console.log(sessionStorage.getItem("lastImageNum"));
+           var lastImageNum = sessionStorage.getItem("lastImageNum") - 1;
+           var lastImage = document.getElementsByClassName("swiper-slide")[lastImageNum].getElementsByTagName("img")[0];
+           setTimeout(function() {
+               view(lastImage);
+           }, 1000);
+    }
+    });
+    </script>
+
+<script>
+    // Global Variables
+    var swiperImages = document.getElementById("swiperImages"); // swipe view container
+    var overlay = document.getElementById("overlay"); // overlaid viewing container
+    var gallery = document.getElementById("gallery"); // main gallery container
+    var tiles = document.getElementsByClassName("tile"); // every img in the gallery
+    var hiddenAnchor = document.getElementById("ghostAnchor"); // anchor for dynamic add to stack buttons
+    var galleryName = imageData[0]["Gallery Name"]; // criteria for adding images & the gallery header
+    document.getElementById("galleryName").innerHTML = galleryName;
+    
+    var newDiv;
+    var titleDiv;
+    var titleSpan;
+    var localImage;
+    
+    // CURRENTLY NOT IN USE
+    function categoryCount() {
+        // figure out the max # of categories a dataset has
+        var totalCategories = 2;
+        while (true) {
+            if (imageData[0]("Category " + parseInt(totalCategories) + 1)) {
+                totalCategories++;
+        }
+            else {
+                console.log("There are at most " + totalCategories + " categories.");
+                var specificCategory = totalCategories; // set starting point to find specific categories
+                break;
+            }
+        }
+    }
+    
+    function autoGen() { 
+        var imageNum = 0; // only counts the images used in the gallery
+        
+        // loop for creating the gallery images only
+        for (i = 0;i < imageData.length;i++) {
+        //this is a check to only use images specified by the customer 
+        if (imageData[i]["Type"] !== "Video") { // this check can be changed to look at a keyword value
+            
+            console.log("column match. creating gallery image..");
+            
+            // create new div, assign classes, and append to gallery
+            newDiv = document.createElement("div");
+            newDiv.classList.add("tile", "image");
+            gallery.appendChild(newDiv);
+            
+            // create img element, assign attibutes, and append to newDiv
+            localImage = document.createElement("img");
+            localImage.src = "images/" + imageData[i]["File Name"];
+            localImage.dataset.num = imageNum;
+            localImage.setAttribute("onclick", "view(this)");
+            localImage.setAttribute("onerror", "usePermalink(this)");
+            newDiv.appendChild(localImage);
+            
+            imageNum++;
+        }
+        else {
+            console.log("row did not match specified criteria");
+            
+        }
+    }
+    
+    imageNum = 0; // reset image counter
+        
+    // this 2nd for loop allows the gallery to load 1st before loading the swiper
+    for (i = 0;i < imageData.length;i++) {
+
+        if (true) {
+            
+            console.log("column match. creating swiper image..");
+            
+            // create new div, assign classes, and append to swiper-images
+            newDiv = document.createElement("div");
+            newDiv.classList.add("swiper-slide", "image");
+            swiperImages.appendChild(newDiv);
+            
+            titleDiv = document.createElement("div");
+            titleDiv.classList.add("title", "slideUp");
+            newDiv.appendChild(titleDiv);
+            titleSpan = document.createElement("span");
+            titleSpan.innerHTML = imageData[i]["Name"];
+            titleDiv.appendChild(titleSpan);
+            
+            // create img element, assign attibutes, and append to newDiv
+            localImage = document.createElement("img");
+            if (imageData[i]["Type"] == "Video") {
+                localImage.src = "images/VideoPlaceholder.png";
+                localImage.setAttribute("onclick", "openNativeViewer()");
+            }
+            else {
+                localImage.src = "images/" + imageData[i]["File Name"];
+            }
+            localImage.dataset.num = imageNum;
+            localImage.dataset.name = imageData[i]["Name"];
+            localImage.setAttribute("onerror", "usePermalink(this)");
+            newDiv.appendChild(localImage);
+            
+            imageNum++;
+        }
+        else {
+            console.log("column did not match");
+        }
+    }
+    }
+    
+    autoGen();
+    
+    // if a local file is not available, the permalink is used instead
+    function usePermalink(brokenImage) {
+        var imageNum = brokenImage.dataset.num;
+        brokenImage.src = imageData[imageNum]["Media URL"];
+        // if the permalink is bad, the image and it's parent container are deleted
+        brokenImage.setAttribute("onerror", "this.parentNode.parentNode.removeChild(this.parentNode)");
+        console.log("Broken Image Number: ", imageNum);
+    }
+</script>
+
+</html>
