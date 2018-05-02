@@ -21,8 +21,9 @@
 15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
 
 17. Add support for videos.
-
-18. Disable tap and hold to save/copy on ios because it crashes the app.
+- come up with a way to display videos on the gallery view
+    - show title over thumbnail?
+    - toggle on topbar for images/videos
 
 -->
 
@@ -159,6 +160,7 @@
             height: 100%;
             object-fit: contain;
             object-position: center;
+            -webkit-touch-callout: none; /* disabled long press save image */
         }
 
         #overlay {
@@ -344,7 +346,6 @@
         <!-- Add Pagination -->
         <div class="swiper-pagination slideDown"></div>
     </div>
-    <!--<div id="testContainer" class="tileView">start test container</div>-->
 </body>
 
 <!-- Load Images from JSON using imageData variable-->
@@ -360,7 +361,7 @@
 <script src="js/actions.js" async></script>
     
 <script>
-    
+    // if the user was viewing an image and changed orientation, this will reload the viewer with that image
     window.onload = (function() {
        if (sessionStorage.getItem("lastImageNum") !== null &&
           sessionStorage.getItem("lastImageNum") !== "null") {
@@ -384,34 +385,19 @@
     var galleryName = imageData[0]["Gallery Name"]; // criteria for adding images & the gallery header
     document.getElementById("galleryName").innerHTML = galleryName;
     
+    // used by autoGen() for creating elements
     var newDiv;
     var titleDiv;
     var titleSpan;
     var localImage;
-    
-    // CURRENTLY NOT IN USE
-    function categoryCount() {
-        // figure out the max # of categories a dataset has
-        var totalCategories = 2;
-        while (true) {
-            if (imageData[0]("Category " + parseInt(totalCategories) + 1)) {
-                totalCategories++;
-        }
-            else {
-                console.log("There are at most " + totalCategories + " categories.");
-                var specificCategory = totalCategories; // set starting point to find specific categories
-                break;
-            }
-        }
-    }
     
     function autoGen() { 
         var imageNum = 0; // only counts the images used in the gallery
         
         // loop for creating the gallery images only
         for (i = 0;i < imageData.length;i++) {
-        //this is a check to only use images specified by the customer 
-        if (imageData[i]["Type"] !== "Video") { // this check can be changed to look at a keyword value
+
+        if (true) { // this check can be changed to only use certain images
             
             console.log("column match. creating gallery image..");
             
@@ -488,6 +474,22 @@
         // if the permalink is bad, the image and it's parent container are deleted
         brokenImage.setAttribute("onerror", "this.parentNode.parentNode.removeChild(this.parentNode)");
         console.log("Broken Image Number: ", imageNum);
+    }
+    
+    // CURRENTLY NOT IN USE
+    function categoryCount() {
+        // figure out the max # of categories a dataset has
+        var totalCategories = 2;
+        while (true) {
+            if (imageData[0]("Category " + parseInt(totalCategories) + 1)) {
+                totalCategories++;
+        }
+            else {
+                console.log("There are at most " + totalCategories + " categories.");
+                var specificCategory = totalCategories; // set starting point to find specific categories
+                break;
+            }
+        }
     }
 </script>
 
