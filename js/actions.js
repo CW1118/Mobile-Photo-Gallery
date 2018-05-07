@@ -46,6 +46,7 @@ function zoomAnimation(zoomNumber) {
 
     var newGallery = gallery.cloneNode(true);
     var newTiles = newGallery.getElementsByClassName("tile");
+    var tileText = newGallery.getElementsByClassName("tileTitle");
     document.body.insertBefore(newGallery, overlay);
     // update the ID of the old gallery
     gallery.id = "oldGallery";
@@ -65,6 +66,12 @@ function zoomAnimation(zoomNumber) {
 
     for (var i = 0; i < newTiles.length; i++) {
         newTiles[i].setAttribute("style", "opacity:0;animation:zoomIn 0.5s;animation-delay:0.4s;animation-fill-mode:forwards;");
+        if (zoomNumber > 2) {
+            tileText[i].setAttribute("style", "display:none;");
+        }
+        else {
+            tileText[i].setAttribute("style", "display:block;");
+        }
     }
 }
 
@@ -75,9 +82,9 @@ function openPage() {
     hiddenAnchor.click();
 }
 
-function openNativeViewer() {
-    var currentImage = document.getElementsByClassName("swiper-pagination-current")[0].innerHTML;
-    var currentImageNum = parseInt(currentImage) - 1;
+function openNativeViewer(selectedItem) {
+    var currentImage = selectedItem.dataset.num;
+    var currentImageNum = parseInt(currentImage);
     hiddenAnchor.href = imageData[currentImageNum]["Media Jump Link"];
     hiddenAnchor.click();
 }

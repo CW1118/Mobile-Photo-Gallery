@@ -14,16 +14,17 @@
 
 5. Add a button to view the image in the default image viewer.
 
-8. Make a pure css page loader
-
-12. Change view in resource viewer to view resource page button.
-
 15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
 
 17. Add support for videos.
 - come up with a way to display videos on the gallery view
     - show title over thumbnail?
     - toggle on topbar for images/videos
+
+18. Add a tap to hold function with addional options on images
+    - view fullscreen (media jumplink)
+    - add to stack (from tile view)
+    - view page (from tile view)
 
 -->
 
@@ -46,6 +47,7 @@
             font-family: sans-serif;
             background-color: #ededed;
         }
+        
         a {
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
@@ -133,12 +135,39 @@
 
         .tileView {
             column-count: 2;
-            column-gap: 1em;
+            column-gap: 10px;
+            -webkit-column-count: 2;
+            -webkit-column-gap: 10px;
             padding: 10px;
         }
 
         .tile {
             transition: transform .2s;
+            position: relative;
+            font-size: 0px;
+        }
+        
+        .tileTitle {
+            position: absolute;
+            bottom: 10px;
+            left: 0px;
+            right: 0px;
+            text-align: center;
+        }
+        
+        .tileTitle span {
+            display: inline-block;
+            background-color: rgba(255,255,255,0.6);
+            border-radius: 0px 0px 2px 2px;
+            padding: 5px;
+            width: 100%;
+            color: #212121;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 14px;
         }
 
         /* add a media query for this to be removed from mobile
@@ -146,21 +175,18 @@
             transform: scale(0.95);
         }*/
 
-        .tile img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            margin-bottom: .5em;
-            border-radius: 2px;
-        }
-
         .image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             object-position: center;
-            -webkit-touch-callout: none; /* disabled long press save image */
+            -webkit-touch-callout: none; /* disables long press save image */
+        }
+        
+        .tile img {
+            object-fit: cover;
+            border-radius: 2px;
+            margin-bottom: 10px;
         }
 
         #overlay {
@@ -256,8 +282,8 @@
             opacity: 1 !important;
             z-index: 0;
             color: #fff;
-            transition: background-color 0.7s, color 0.7s;
-            -webkit-transition: background-color 0.7s, color 0.7s;
+            transition: background-color 0.7s, color 0.7s, opacity 0.7s;
+            -webkit-transition: background-color 0.7s, color 0.7s, opacity 0.7s;
         }
         
         .disabled {
@@ -406,11 +432,24 @@
             newDiv.classList.add("tile", "image");
             gallery.appendChild(newDiv);
             
+            titleDiv = document.createElement("div");
+            titleDiv.classList.add("tileTitle");
+            newDiv.appendChild(titleDiv);
+            titleSpan = document.createElement("span");
+            titleSpan.innerHTML = imageData[i]["Name"];
+            titleDiv.appendChild(titleSpan);
+            
             // create img element, assign attibutes, and append to newDiv
             localImage = document.createElement("img");
-            localImage.src = "images/" + imageData[i]["File Name"];
+            if (imageData[i]["Type"] == "Video") {
+                localImage.src = "images/VideoPlaceholder.png";
+                localImage.setAttribute("onclick", "openNativeViewer(this)");
+            }
+            else {
+                localImage.src = "images/" + imageData[i]["File Name"];
+                localImage.setAttribute("onclick", "view(this)");
+            }
             localImage.dataset.num = imageNum;
-            localImage.setAttribute("onclick", "view(this)");
             localImage.setAttribute("onerror", "usePermalink(this)");
             newDiv.appendChild(localImage);
             
@@ -447,7 +486,7 @@
             localImage = document.createElement("img");
             if (imageData[i]["Type"] == "Video") {
                 localImage.src = "images/VideoPlaceholder.png";
-                localImage.setAttribute("onclick", "openNativeViewer()");
+                localImage.setAttribute("onclick", "openNativeViewer(this)");
             }
             else {
                 localImage.src = "images/" + imageData[i]["File Name"];
