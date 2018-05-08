@@ -9,9 +9,6 @@
 - the user will able to select multiple images and add them to a custom gallery for later viewing
 - these images will possibly be added into a new folder
 
-4. Show image display name above the image while in viewer mode.
-- either dynamically show the current image name or have an info button to show it
-
 5. Add a button to view the image in the default image viewer.
 
 15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
@@ -40,11 +37,20 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="css/swiper.min.css">
     <style>
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('fonts/OpenSans-Regular.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('fonts/OpenSans-Bold.ttf') format('truetype');
+            font-weight: bold;
+        }
         body {
             position: relative;
             margin: 0px;
             padding: 0px;
-            font-family: sans-serif;
+            font-family: 'Open Sans', sans-serif;
             background-color: #ededed;
         }
         
@@ -58,6 +64,7 @@
 
         .header h1 {
             margin: 0px;
+            font-weight: bold;
             text-align: center;
             background-color: #B8192A;
             padding: 10px;
@@ -102,6 +109,7 @@
         }
         .footerIcons div {
             width: 50px;
+            height: 30px;
             text-align: center;
             padding-bottom: 30px;     
             margin-bottom: -30px;
@@ -110,6 +118,7 @@
         }
         .footerIcons div a {
             width: 50px;
+            height: 30px;
             padding-bottom: 30px;     
             margin-bottom: -30px; 
             position: relative;
@@ -125,7 +134,7 @@
         }
         #footerText span {
             display: inline-block;
-            width: 50px;
+            width: 55px;
             text-align: center;
         }
         .footerIcons i {
@@ -152,16 +161,16 @@
             bottom: 10px;
             left: 0px;
             right: 0px;
-            text-align: center;
+            text-align: left;
         }
         
         .tileTitle span {
             display: inline-block;
-            background-color: rgba(255,255,255,0.6);
+            background-color: rgba(0,0,0,0.6);
             border-radius: 0px 0px 2px 2px;
-            padding: 5px;
+            padding: 7px;
             width: 100%;
-            color: #212121;
+            color: #fff;
             box-sizing: border-box;
             -webkit-box-sizing: border-box;
             text-overflow: ellipsis;
