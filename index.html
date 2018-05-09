@@ -43,8 +43,8 @@
         }
         @font-face {
             font-family: 'Open Sans';
-            src: url('fonts/OpenSans-Bold.ttf') format('truetype');
-            font-weight: bold;
+            src: url('fonts/OpenSans-Light.ttf') format('truetype');
+            font-weight: lighter;
         }
         body {
             position: relative;
@@ -58,17 +58,18 @@
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
         .header {
-            color: #fff;
             padding: 10px;
         }
 
         .header h1 {
             margin: 0px;
-            font-weight: bold;
+            font-weight: lighter;
             text-align: center;
             background-color: #B8192A;
-            padding: 10px;
+            padding: 2px 5px 8px 5px;
             border-radius: 3px;
+            color: #fff;
+            letter-spacing: 2px;
         }
         
         #showFooterIcon {
@@ -339,9 +340,13 @@
         
         @media not all and (min-width: 704px) {
         
+            .header h1 {
+            font-size: 24px;
+        }
+            
         .tileTitle span {
             padding: 4px 5px;
-            font-size: 11px;
+            font-size: 2.5vw;
         }
         }
 
