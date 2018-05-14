@@ -23,6 +23,10 @@
     - add to stack (from tile view)
     - view page (from tile view)
 
+19. Add background color to image elements so maybe while they are loading you will see a grey placeholder block
+
+20. Make the screen rotate function also keep track of the zoom level.
+
 -->
 
 <!DOCTYPE html>
@@ -58,7 +62,7 @@
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
         .header {
-            padding: 10px;
+            padding: 10px 0px;
         }
 
         .header h1 {
@@ -67,7 +71,6 @@
             text-align: center;
             background-color: #B8192A;
             padding: 2px 5px 8px 5px;
-            border-radius: 3px;
             color: #fff;
             letter-spacing: 2px;
         }
