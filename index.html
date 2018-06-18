@@ -27,6 +27,12 @@
 
 20. Make the screen rotate function also keep track of the zoom level.
 
+21. Move top right buttons down enough to fit a full width line of title text.
+
+22. Fix Android issues
+- bottom action bar sizing and alignment
+- bottom right show arrow alignment
+
 -->
 
 <!DOCTYPE html>
@@ -222,15 +228,19 @@
             right: 0px;
             transition: top 0.4s;
             text-align: center;
-            padding: 10px 0px;
         }
         
         .title span {
             background-color: rgba(0,0,0,0.7);
             border-radius: 0px 0px 10px 10px;
-            padding: 10px 20px;
             margin: 0 auto;
-            max-width: calc(100% - 60px);
+            padding: 10px;
+            max-width: calc(100% - 80px);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+            
         }
         
         #viewerOptions {
@@ -351,6 +361,14 @@
             padding: 4px 5px;
             font-size: 2.5vw;
         }
+            
+            .title {
+                text-align: left;
+            }
+            
+            .title span {
+                border-radius: 0px 0px 10px 0px;
+            }
         }
 
     </style>
