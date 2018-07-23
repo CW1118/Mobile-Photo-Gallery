@@ -14,7 +14,9 @@ function view(image) {
     overlay.classList.remove("hide");
     // Prevent Body Scrolling
     document.body.setAttribute("style", "overflow:hidden");
-    document.body.addEventListener("touchmove", touchStop, false);
+    overlay.addEventListener("touchmove", function(e) {
+        e.preventDefault();
+}, false);
     // hide the footer
     document.getElementById("footer").classList.add("slideDown");
     document.getElementById("showFooterIcon").classList.add("slideRight");
@@ -74,3 +76,22 @@ window.onorientationchange = function () {
         window.location.reload();
     }
 };
+
+// UNFINISHED IMAGE ZOOM FEATURE
+// var image = document.getElementsByClassName('swiper-slide');
+//var baseScale = 1;
+
+//image.addEventListener('gesturechange',function(e){
+
+    //if(e.scale>1){
+        //zoom in 
+        //increase the size of image according to the e.scale
+       // var newScale = "transform: " + baseScale + 0.1;
+       // image.setAttribute("style", newScale);
+  //  }
+
+  //  else if(e.scale<1){
+        //zoom out 
+        //decrease the size of image according to the e.scale
+  //  }
+//});

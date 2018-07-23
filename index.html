@@ -1,40 +1,3 @@
-<!-- FUTURE FEATURES
-
-1. A separate admin html page that allows admins to add/update/remove images w/ input fields for image url, display name, and product jump link.
-- a button for this page will appear when the gallery is viewed on desktop using a media query
-
-2. Sections will be broken up using the category breadcrumb and headers will placed above each section.
-
-3. Custom galleries for presentations.
-- the user will able to select multiple images and add them to a custom gallery for later viewing
-- these images will possibly be added into a new folder
-
-5. Add a button to view the image in the default image viewer.
-
-15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
-
-17. Add support for videos.
-- come up with a way to display videos on the gallery view
-    - show title over thumbnail?
-    - toggle on topbar for images/videos
-
-18. Add a tap to hold function with addional options on images
-    - view fullscreen (media jumplink)
-    - add to stack (from tile view)
-    - view page (from tile view)
-
-19. Add background color to image elements so maybe while they are loading you will see a grey placeholder block
-
-20. Make the screen rotate function also keep track of the zoom level.
-
-21. Move top right buttons down enough to fit a full width line of title text.
-
-22. Fix Android issues
-- bottom action bar sizing and alignment
-- bottom right show arrow alignment
-
--->
-
 <!DOCTYPE html>
 <html>
 
@@ -46,332 +9,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="css/swiper.min.css">
-    <style>
-        @font-face {
-            font-family: 'Open Sans';
-            src: url('fonts/OpenSans-Regular.ttf') format('truetype');
-        }
-        @font-face {
-            font-family: 'Open Sans';
-            src: url('fonts/OpenSans-Light.ttf') format('truetype');
-            font-weight: lighter;
-        }
-        body {
-            position: relative;
-            margin: 0px;
-            padding: 0px;
-            font-family: 'Open Sans', sans-serif;
-            background-color: #ededed;
-        }
-        
-        a {
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        }
-        .header {
-            padding: 10px 0px;
-        }
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
 
-        .header h1 {
-            margin: 0px;
-            font-weight: lighter;
-            text-align: center;
-            background-color: #B8192A;
-            padding: 2px 5px 8px 5px;
-            color: #fff;
-            letter-spacing: 2px;
-        }
-        
-        #showFooterIcon {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            font-size: 30px;
-            color: #333333;
-            transition: right 1s;
-            z-index: 2;
-            background-color: rgba(255,255,255,0.8);
-            border-radius: 50%;
-            padding: 10px;
-            width: 25px;
-            height: 25px;
-            box-shadow: 1px 1px 4px #333;
-        }
-        
-        .fa-chevron-up:before {
-            position: absolute;
-            top: 4px;
-            left: 7.5px;
-        }
-        
-        #footer {
-            position: fixed;
-            bottom: 0px;
-            width: 100%;
-            background-color: rgba(255,255,255,0.8);
-            z-index: 2;
-            transition: bottom .8s;
-        }
-        .footerIcons {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 40px;
-        }
-        .footerIcons div {
-            width: 55px;
-            height: 30px;
-            text-align: center;
-            padding-bottom: 30px;     
-            margin-bottom: -30px;
-            position: relative;
-            z-index: 1;
-        }
-        .footerIcons div a {
-            width: 50px;
-            height: 30px;
-            padding-bottom: 30px;     
-            margin-bottom: -30px; 
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-        }
-        #footerText {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 15px;
-            font-size: 11px;
-            padding-bottom: 4px;
-        }
-        #footerText span {
-            display: inline-block;
-            width: 55px;
-            text-align: center;
-        }
-        .footerIcons i {
-            font-size: 30px;
-            color: #333333;
-        }
-
-        .tileView {
-            column-count: 2;
-            column-gap: 10px;
-            -webkit-column-count: 2;
-            -webkit-column-gap: 10px;
-            padding: 10px;
-        }
-
-        .tile {
-            transition: transform .2s;
-            position: relative;
-            font-size: 0px;
-        }
-        
-        .tileTitle {
-            position: absolute;
-            bottom: 10px;
-            left: 0px;
-            right: 0px;
-            text-align: left;
-        }
-        
-        .tileTitle span {
-            display: inline-block;
-            background-color: rgba(0,0,0,0.6);
-            border-radius: 0px 0px 2px 2px;
-            padding: 7px;
-            width: 100%;
-            color: #fff;
-            box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            font-size: 14px;
-        }
-
-        /* add a media query for this to be removed from mobile
-        .tile:hover {
-            transform: scale(0.95);
-        }*/
-
-        .image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            object-position: center;
-            -webkit-touch-callout: none; /* disables long press save image */
-        }
-        
-        .tile img {
-            object-fit: cover;
-            border-radius: 2px;
-            margin-bottom: 10px;
-        }
-
-        #overlay {
-            position: fixed;
-            top: 0px;
-            bottom: 0px;
-            right: 0px;
-            left: 0px;
-            height: 100%;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        
-        .title {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            right: 0px;
-            transition: top 0.4s;
-            text-align: center;
-        }
-        
-        .title span {
-            background-color: rgba(0,0,0,0.7);
-            border-radius: 0px 0px 10px 10px;
-            margin: 0 auto;
-            padding: 10px;
-            max-width: calc(100% - 80px);
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            display: inline-block;
-            
-        }
-        
-        #viewerOptions {
-            position: absolute;
-            z-index: 2;
-            top: 0px;
-            right: 0px;
-            height: 185px;
-            width: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-            transition: right 0.4s;
-            background-color: rgba(0,0,0,0.7);
-            border-radius: 0 0 0 10px;
-        }
-        
-        #viewerOptions div {
-            width: 100%;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #viewerOptions i {
-            color: #fff;
-        }
-        
-        #closeButton  {
-            font-size: 50px;
-        }
-        
-        #stackButton img {
-            width: 40px;
-        }
-        
-        #viewButton i {
-            font-size: 35px;
-        }
-
-        .swiper-pagination {
-            bottom: 0px;
-            transition: bottom 0.4s;
-            width: auto;
-            display: inline-block;
-            background-color: rgba(0,0,0,0.7);
-            border-radius: 10px 10px 0 0;
-            padding: 10px 20px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .hide {
-            background-color: rgba(0, 0, 0, 0);
-            color: rgba(0, 0, 0, 0);
-            z-index: -1;
-        }
-        
-        .show {
-            background-color: rgba(0, 0, 0, 0.9);
-            opacity: 1 !important;
-            z-index: 0;
-            color: #fff;
-            transition: background-color 0.7s, color 0.7s, opacity 0.7s;
-            -webkit-transition: background-color 0.7s, color 0.7s, opacity 0.7s;
-        }
-        
-        .disabled {
-            color: #ccc !important;
-        }
-
-        .slideRight {
-            right: -25% !important;
-            transition: right 2s !important;
-        }
-
-        .slideDown {
-            bottom: -25% !important;
-            transition: bottom 2s;
-        }
-        
-        .slideUp {
-            top: -25% !important;
-            transition: top 2s;
-        }
-
-        @keyframes zoomOut {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0);
-                opacity: 0;
-            }
-        }
-
-        @keyframes zoomIn {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        
-        @media not all and (min-width: 704px) {
-        
-            .header h1 {
-            font-size: 24px;
-        }
-            
-        .tileTitle span {
-            padding: 4px 5px;
-            font-size: 2.5vw;
-        }
-            
-            .title {
-                text-align: left;
-            }
-            
-            .title span {
-                border-radius: 0px 0px 10px 0px;
-            }
-        }
-
-    </style>
 </head>
 
 <body>
@@ -577,3 +217,43 @@
 </script>
 
 </html>
+
+<!-- FUTURE FEATURES & Known Bugs
+
+1. A separate admin html page that allows admins to add/update/remove images w/ input fields for image url, display name, and product jump link.
+- a button for this page will appear when the gallery is viewed on desktop using a media query
+
+2. Sections will be broken up using the category breadcrumb and headers will placed above each section.
+
+3. Custom galleries for presentations.
+- the user will able to select multiple images and add them to a custom gallery for later viewing
+- these images will possibly be added into a new folder
+
+5. Add a button to view the image in the default image viewer.
+
+15. Recreate the columns effect while images are ordered in rows. (allows the slider to match the galleries sort order)
+
+17. Add support for videos.
+- come up with a way to display videos on the gallery view
+    - show title over thumbnail?
+    - toggle on topbar for images/videos
+
+18. Add a tap to hold function with addional options on images
+    - view fullscreen (media jumplink)
+    - add to stack (from tile view)
+    - view page (from tile view)
+
+19. Add background color to image elements so maybe while they are loading you will see a grey placeholder block
+
+20. Make the screen rotate function also keep track of the zoom level.
+
+22. Fix Android issues
+- bottom action bar sizing and alignment
+- bottom right show arrow alignment
+
+23. Add web support
+- right and left keys will scroll slider?
+
+24. Prevent tiles from scrolling vertically behind the swiper viewer
+
+-->
