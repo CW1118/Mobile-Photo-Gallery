@@ -7,6 +7,10 @@ function view(image) {
             el: '.swiper-pagination',
             type: 'fraction',
         },
+        keyboard: {
+            enabled: true,
+            onlyInViewport: false,
+        },
         initialSlide: parseInt(image.dataset.num),
     });
     // Show Viewer
@@ -77,7 +81,7 @@ window.onorientationchange = function () {
     }
 };
 
-// UNFINISHED IMAGE ZOOM FEATURE
+// UNFINISHED IMAGE ZOOM FEATURE (http://idangero.us/swiper/api/#zoom)
 // var image = document.getElementsByClassName('swiper-slide');
 //var baseScale = 1;
 
