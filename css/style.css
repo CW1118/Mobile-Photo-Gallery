@@ -29,7 +29,7 @@ a {
     margin: 0px;
     font-weight: lighter;
     text-align: center;
-    background-color: #B8192A;
+    background-color: #003D7F;
     padding: 2px 5px 8px 5px;
     color: #fff;
     letter-spacing: 2px;
@@ -40,7 +40,7 @@ a {
     bottom: 25px;
     right: 25px;
     font-size: 30px;
-    color: #333333;
+    color: #007AFF;
     transition: right 1s;
     z-index: 2;
     background-color: rgba(255, 255, 255, 0.8);
@@ -61,7 +61,7 @@ a {
     position: fixed;
     bottom: 0px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.85);
     z-index: 2;
     transition: bottom .8s;
 }
@@ -70,30 +70,35 @@ a {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 40px;
+    height: 50px;
+    border-top: 1px solid #ccc;
 }
 
 .footerIcons div {
     width: 55px;
     height: 30px;
     text-align: center;
-    padding-bottom: 30px;
-    margin-bottom: -30px;
+    padding: 10px 20px;
+    margin: -10px -20px;
     position: relative;
     z-index: 1;
+}
+
+.footerIcons div:nth-child(5) {
+    margin-top: -14px; /* fixes vertical alignment issue with hide arrow */
 }
 
 .footerIcons div a {
     width: 50px;
     height: 30px;
-    padding-bottom: 30px;
-    margin-bottom: -30px;
+    padding: 10px 20px;
+    margin: -10px -20px;
     position: relative;
     z-index: 1;
     display: inline-block;
 }
 
-#footerText {
+/*#footerText {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -106,11 +111,11 @@ a {
     display: inline-block;
     width: 55px;
     text-align: center;
-}
+}*/
 
 .footerIcons i {
     font-size: 30px;
-    color: #333333;
+    color: #007AFF;
 }
 
 .tileView {
@@ -238,6 +243,10 @@ a {
 
 #stackButton img {
     width: 40px;
+}
+
+#viewButton {
+    height: 55px;
 }
 
 #viewButton i {
