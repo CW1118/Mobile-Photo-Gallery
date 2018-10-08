@@ -1,11 +1,15 @@
-@font-face {
-    font-family: 'Open Sans';
-    src: url('../fonts/OpenSans-Regular.ttf') format('truetype');
+:root {
+    --brand-color: #003D7F;
 }
 
 @font-face {
     font-family: 'Open Sans';
-    src: url('../fonts/OpenSans-Light.ttf') format('truetype');
+    src: url('../font/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../font/OpenSans-Light.ttf') format('truetype');
     font-weight: lighter;
 }
 
@@ -29,7 +33,7 @@ a {
     margin: 0px;
     font-weight: lighter;
     text-align: center;
-    background-color: #003D7F;
+    background-color: var(--brand-color);
     padding: 2px 5px 8px 5px;
     color: #fff;
     letter-spacing: 2px;
@@ -39,7 +43,7 @@ a {
     position: fixed;
     bottom: 25px;
     right: 25px;
-    font-size: 30px;
+    font-size: 44px;
     color: #007AFF;
     transition: right 1s;
     z-index: 2;
@@ -51,10 +55,10 @@ a {
     box-shadow: 1px 1px 4px #333;
 }
 
-.fa-chevron-up:before {
+.icon-up-open:before {
     position: absolute;
-    top: 4px;
-    left: 7.5px;
+    top: 0px;
+    left: -8.2px;
 }
 
 #footer {
@@ -76,23 +80,24 @@ a {
 
 .footerIcons div {
     width: 55px;
-    height: 30px;
+    height: 50px;
     text-align: center;
-    padding: 10px 20px;
-    margin: -10px -20px;
+    padding: 0px 20px;
+    margin: 0px -20px;
     position: relative;
     z-index: 1;
 }
 
 .footerIcons div:nth-child(5) {
-    margin-top: -14px; /* fixes vertical alignment issue with hide arrow */
+    margin-bottom: -7px; /* fixes vertical alignment issue with hide arrow */
+    padding-bottom: 15px;
 }
 
 .footerIcons div a {
     width: 50px;
     height: 30px;
     padding: 10px 20px;
-    margin: -10px -20px;
+    margin: 0px -20px;
     position: relative;
     z-index: 1;
     display: inline-block;
@@ -114,8 +119,12 @@ a {
 }*/
 
 .footerIcons i {
-    font-size: 30px;
+    font-size: 34px;
     color: #007AFF;
+}
+
+#hideFooterIcon {
+    font-size: 43px;
 }
 
 .tileView {
@@ -237,13 +246,13 @@ a {
     color: #fff;
 }
 
-#closeButton {
+#closeButton, #stackButton {
     font-size: 50px;
 }
 
-#stackButton img {
+/*#stackButton img {
     width: 40px;
-}
+}*/
 
 #viewButton {
     height: 55px;
@@ -251,6 +260,8 @@ a {
 
 #viewButton i {
     font-size: 35px;
+    padding-bottom: 6px;
+    padding-left: 5px
 }
 
 .swiper-pagination {
